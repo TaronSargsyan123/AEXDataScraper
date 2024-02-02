@@ -1,0 +1,18 @@
+.center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+
+}
+
+.custom-container {
+    width: 30%;
+    display: inline-block;
+    margin-right: 5%;
+    box-sizing: border-box;
+}
+
+.custom-container:last-child {
+    margin-right: 0;
+}
