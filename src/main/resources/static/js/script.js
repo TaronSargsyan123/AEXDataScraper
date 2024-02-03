@@ -5,7 +5,8 @@ function uploadMultipleFiles(elementId, message) {
 
     for (var i = 0; i < files.length; i++) {
         formData.append('files', files[i]);
-        finalMessage = finalMessage + " " + files[i].name
+        finalMessage = finalMessage + "&" + files[i].name
+        console.log(finalMessage);
     }
     formData.append("message", finalMessage);
 
@@ -33,11 +34,12 @@ function uploadMultipleFiles(elementId, message) {
 // longTermMarketReportFormFile
 // finalBlankFormFile
 // marketsFormFileMultiple
+//split symbol - &
 function sendData(){
-    uploadMultipleFiles('interstateFormFile', 'interstateFormFile');
-    uploadMultipleFiles('paymentFormFileMultiple', 'paymentFormFileMultiple');
-    uploadMultipleFiles('longTermMarketFormFile', 'longTermMarketFormFile');
-    uploadMultipleFiles('longTermMarketReportFormFile', 'longTermMarketReportFormFile');
-    uploadMultipleFiles('marketsFormFileMultiple', 'marketsFormFileMultiple');
+    uploadMultipleFiles('interstateFormFile', 'interstate');
+    uploadMultipleFiles('paymentFormFileMultiple', 'paymentMultiple');
+    uploadMultipleFiles('longTermMarketFormFile', 'longTermMarket');
+    uploadMultipleFiles('longTermMarketReportFormFile', 'longTermMarketReport');
+    uploadMultipleFiles('marketsFormFileMultiple', 'marketsMultiple');
     uploadMultipleFiles('finalBlankFormFile', 'finalBlankFormFile');
 }
