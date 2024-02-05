@@ -64,6 +64,24 @@ function sendData(){
     document.getElementById("downloadBtn").disabled = false;
 }
 
+function checkWindowWidth() {
+    var leftDiv = document.getElementById('leftDiv');
+    var rightDiv = document.getElementById('rightDiv');
+    if (window.innerWidth > window.screen.width * 0.6) {
+        leftDiv.classList.remove('hidden');
+        rightDiv.classList.add('custom-container');
+        rightDiv.classList.remove('single-custom-container')
+    } else {
+        leftDiv.classList.add('hidden');
+        rightDiv.classList.remove('custom-container');
+        rightDiv.classList.add('single-custom-container')
+    }
+}
+
+
+checkWindowWidth();
+window.addEventListener('resize', checkWindowWidth);
+
 document.getElementById('downloadBtn').addEventListener('click', function() {
     fetch('/download', {
         method: 'GET',

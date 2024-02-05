@@ -16,3 +16,13 @@
 .custom-container:last-child {
     margin-right: 0;
 }
+
+.hidden {
+    display: none;
+}
+
+.single-custom-container {
+    width: 80%;
+    display: inline-block;
+    box-sizing: border-box;
+}
