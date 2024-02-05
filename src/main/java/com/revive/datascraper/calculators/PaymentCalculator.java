@@ -40,7 +40,7 @@ public class PaymentCalculator {
                 excelModel.writeCell(shortageCountColumn, rowForImport, shortageCount, fileFinal);
                 excelModel.writeCell(shortagePriceColumn, rowForImport, shortagePrice, fileFinal);
             }catch (Exception e){
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         }
     }
@@ -70,7 +70,7 @@ public class PaymentCalculator {
                     }
                 }else {}
             }catch (Exception e){
-                e.printStackTrace();
+//                e.printStackTrace();
             }
         }
 

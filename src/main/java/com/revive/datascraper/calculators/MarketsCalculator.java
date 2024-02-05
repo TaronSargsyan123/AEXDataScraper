@@ -35,16 +35,16 @@ public class MarketsCalculator {
             double unregulatedInterstateMarketShortageSum = 0;
 
 
-            System.out.println(maxColumnForCheck);
+//            System.out.println(maxColumnForCheck);
 
             if (columnCount > 8) {
 
                 for (int i = 4; i < maxColumnForCheck; i = i + 2) {
 
-                    System.out.println(i);
+//                    System.out.println(i);
 
                     String cell = (String) excelModel.readDataFromCell(i, row, file);
-                    System.out.println(cell);
+//                    System.out.println(cell);
                     String[] parts = cell.split(" ");
 
                     if (cell.length() == 13 && parts[0].length() == 4) { //ԿՈՒՊ Բաղադրիչ
@@ -82,16 +82,16 @@ public class MarketsCalculator {
             excelModel.writeCell(18, rowForImport, unregulatedMarketSurplusSum + unregulatedInterstateMarketSurplusSum, fileFinal);
             excelModel.writeCell(19, rowForImport, unregulatedMarketShortageSum + unregulatedInterstateMarketShortageSum, fileFinal);
 
-            System.out.println();
-            System.out.println("ՕԱՇ Բաղադրիչ gnvac - " + dayBeforeMarketSurplusSum);
-            System.out.println("ՕԱՇ Բաղադրիչ vacharvac - " + dayBeforeMarketShortageSum);
-            System.out.println();
-            System.out.println("ԿՈՒՊ Բաղադրիչ gnvac - " + regulatedContractMarketSurplusSum);
-            System.out.println("ԿՈՒՊ Բաղադրիչ vacharvac - " + regulatedContractMarketShortageSum);
-            System.out.println();
-            System.out.println("ՉՈՒՊ Բաղադրիչ gnvac - " + unregulatedMarketSurplusSum + unregulatedInterstateMarketSurplusSum);
-            System.out.println("ՉՈՒՊ Բաղադրիչ vacharvac - " + unregulatedMarketShortageSum + unregulatedInterstateMarketShortageSum);
-            System.out.println();
+//            System.out.println();
+//            System.out.println("ՕԱՇ Բաղադրիչ gnvac - " + dayBeforeMarketSurplusSum);
+//            System.out.println("ՕԱՇ Բաղադրիչ vacharvac - " + dayBeforeMarketShortageSum);
+//            System.out.println();
+//            System.out.println("ԿՈՒՊ Բաղադրիչ gnvac - " + regulatedContractMarketSurplusSum);
+//            System.out.println("ԿՈՒՊ Բաղադրիչ vacharvac - " + regulatedContractMarketShortageSum);
+//            System.out.println();
+//            System.out.println("ՉՈՒՊ Բաղադրիչ gnvac - " + unregulatedMarketSurplusSum + unregulatedInterstateMarketSurplusSum);
+//            System.out.println("ՉՈՒՊ Բաղադրիչ vacharvac - " + unregulatedMarketShortageSum + unregulatedInterstateMarketShortageSum);
+//            System.out.println();
 
         }
 
@@ -106,8 +106,8 @@ public class MarketsCalculator {
         double value = (double) excelModel.readDataFromCell(2, row, fileForTariff);
         double sum = excelModel.getSumOfColumn(4, 13, initialFile);
 
-        System.out.println(value);
-        System.out.println(sum);
+//        System.out.println(value);
+//        System.out.println(sum);
 
 
         int rowForImport = excelModel.getIdSequence("210004") + Constants.startCountingRow;

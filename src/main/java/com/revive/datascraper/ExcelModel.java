@@ -67,10 +67,10 @@ public class ExcelModel {
             // Close thread
             fileInputStream.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
 
-        //System.out.println(getIdCount());
+        System.out.println(getIdCount());
     }
 
     public String readId(File file){
@@ -152,7 +152,7 @@ public class ExcelModel {
                     //get value
                     try {
                         Double cellValue = cell.getNumericCellValue();
-                        //System.out.println(cellValue);
+                        System.out.println(cellValue);
                         //add to ArrayList
                         tempList.add(cellValue);
                     }catch (Exception ignored){}
@@ -187,7 +187,7 @@ public class ExcelModel {
                         cellValue = cell.getStringCellValue();
                     }
 
-                    //System.out.println(cellValue);
+                    System.out.println(cellValue);
                 } else {
                     System.out.println("Cell not exist");
                 }
@@ -197,7 +197,7 @@ public class ExcelModel {
             fileInputStream.close();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         } catch (InvalidFormatException e) {
             throw new RuntimeException(e);
         }
@@ -217,7 +217,7 @@ public class ExcelModel {
             if(index > 0) {
                 String extension = fileName.substring(index + 1);
                 if (extension.equals("xls") || extension.equals("xlsx")){
-                    //System.out.println(fileEntry.getName());
+                    System.out.println(fileEntry.getName());
                     files.add(fileEntry);
                 }
 

@@ -55,25 +55,28 @@ public class MainModel {
             }
 
         }
-        System.out.println("------------------------------------------------------------------------------------------------------------------");
-        System.out.println("Final file name " + finelFile.getName());
-        System.out.println("------------------------------------------------------------------------------------------------------------------");
-        if (finelFile.exists()) {
-            System.out.println("File exist");
-        } else {
-            System.out.println("File not found: " + finelFile.getAbsolutePath());
-        }
 
 
-        PaymentCalculator paymentController = new PaymentCalculator();
+        try {
+            PaymentCalculator paymentController = new PaymentCalculator();
+            paymentController.calculateAndWriteData(paymentFiles, finelFile);
+        }catch (Exception e){}
 
-        paymentController.calculateAndWriteData(paymentFiles, finelFile);
-        InterstateDataCalculator.calculateAndWriteData(interstateFile, finelFile);
+        try {
+            MarketsCalculator marketsController = new MarketsCalculator();
+            marketsController.calculateAndWriteData(marketFiles, finelFile); // , "C:/Users/taron/Desktop/Template 23_01_2024 00_03_57.xlsx"
+        }catch (Exception e){}
 
-        MarketsCalculator marketsController = new MarketsCalculator();
-        marketsController.calculateAndWriteData(marketFiles, finelFile); // , "C:/Users/taron/Desktop/Template 23_01_2024 00_03_57.xlsx"
+        try {
+            MarketsCalculator marketsController = new MarketsCalculator();
+            marketsController.calculateAndWriteLongLastingShop(longTermMarketReportFile, longTermMarketFile, finelFile);
+        }catch (Exception e){}
 
-        marketsController.calculateAndWriteLongLastingShop(longTermMarketReportFile, longTermMarketFile, finelFile);
+        try {
+            InterstateDataCalculator.calculateAndWriteData(interstateFile, finelFile);
+        }catch (Exception e){}
+
+
 
         return finelFile;
     }
