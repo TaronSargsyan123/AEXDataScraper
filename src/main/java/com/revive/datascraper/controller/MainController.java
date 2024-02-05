@@ -47,11 +47,12 @@ public class MainController {
     @PostMapping("/upload")
     public ResponseEntity<String>  handleFileUpload(@RequestPart("files") MultipartFile[] files, @RequestPart("message") String message) throws IOException, InvalidFormatException {
 
-        clearFolder("src/main/resources/tmp");
 
-        List<String> fileNames = Arrays.stream(files)
-                .map(MultipartFile::getOriginalFilename)
-                .collect(Collectors.toList());
+
+
+//        List<String> fileNames = Arrays.stream(files)
+//                .map(MultipartFile::getOriginalFilename)
+//                .collect(Collectors.toList());
 
 
         messagesArrayList.add(message);
@@ -76,19 +77,31 @@ public class MainController {
             }
         }
 
+
+
+        return new ResponseEntity<>("Files uploaded successfully", HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "/calculate", method = RequestMethod.GET)
+    public ResponseEntity<String> calculate() throws IOException, InvalidFormatException {
+
+
         MainModel mainModel = new MainModel();
         finalFile = mainModel.calculate(messagesArrayList, uploadedFiles);
 
         System.out.println("Data is calculated");
 
-        return new ResponseEntity<>("Files uploaded successfully", HttpStatus.OK);
+        return new ResponseEntity<>("Files calculated successfully", HttpStatus.OK);
     }
+
 
     @RequestMapping(path = "/download", method = RequestMethod.GET)
     public ResponseEntity<Resource> download(String param) throws IOException {
 
 
         InputStreamResource resource = new InputStreamResource(new FileInputStream(finalFile));
+
+        clearFolder(new File("src/main/resources/tmp"));
 
         return ResponseEntity.ok()
                 .contentLength(finalFile.length())
@@ -100,17 +113,14 @@ public class MainController {
 
 
 
-    public static void clearFolder(String folderPath) {
-        File folder = new File(folderPath);
+    public static void clearFolder(File folder) {
         if (folder.exists()) {
             File[] files = folder.listFiles();
             if (files != null) {
                 for (File file : files) {
                     if (file.isDirectory()) {
-                        // Recursive call to clear subdirectories
-                        clearFolder(String.valueOf(file));
+                        clearFolder(file);
                     } else {
-                        // Delete the file
                         file.delete();
                     }
                 }
