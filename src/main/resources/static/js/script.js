@@ -43,9 +43,9 @@ function sendData(){
 
 
 
-    const url = 'http://localhost:8080/calculate';
+    const url = ''; // Update the URL accordingly
 
-    fetch(url)
+    fetch('/calculate')
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -57,9 +57,7 @@ function sendData(){
         })
         .catch(error => {
             console.error('Error:', error);
-            // Handle errors
         });
-
 
     document.getElementById("downloadBtn").disabled = false;
 }
@@ -96,7 +94,6 @@ document.getElementById('downloadBtn').addEventListener('click', function() {
             const url = window.URL.createObjectURL(new Blob([blob]));
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'final.xlsx';
             document.body.appendChild(a);
             a.click();
             window.URL.revokeObjectURL(url);

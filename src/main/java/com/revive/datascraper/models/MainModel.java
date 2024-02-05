@@ -92,5 +92,20 @@ public class MainModel {
         return response;
     }
 
+    public static void clearFolder(File folder) {
+        if (folder.exists()) {
+            File[] files = folder.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    if (file.isDirectory()) {
+                        clearFolder(file);
+                    } else {
+                        file.delete();
+                    }
+                }
+            }
+        }
+    }
+
 
 }
