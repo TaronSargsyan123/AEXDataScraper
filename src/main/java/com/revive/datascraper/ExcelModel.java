@@ -32,7 +32,7 @@ public class ExcelModel {
         return sum;
     }
 
-    public void readFinalIDs(File finalFile){
+    public void readFinalIDs(File finalFile){ //TODO null point exception
         try {
             //open file
             FileInputStream fileInputStream = new FileInputStream(finalFile);

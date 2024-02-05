@@ -2,6 +2,9 @@ package com.revive.datascraper.controller;
 
 import com.revive.datascraper.models.MainModel;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.core.io.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,6 +25,12 @@ public class MainController {
     private ArrayList<File> uploadedFiles = new ArrayList<>();
     private File finalFile;
 
+    @Value("${file.download.path}")
+    private String downloadPath;
+
+    @Autowired
+    private MessageSource messageSource;
+
     @GetMapping("/")
     public String showForm() {
         return "index";
@@ -34,7 +43,7 @@ public class MainController {
 
         for (MultipartFile file : files) {
             try {
-                String path = "src/main/resources/tmp/" + file.getOriginalFilename();
+                String path = downloadPath + file.getOriginalFilename();
                 File fileTarget = new File(path);
 
                 try (OutputStream os = new FileOutputStream(fileTarget)) {
@@ -47,9 +56,9 @@ public class MainController {
             }
         }
 
+        String successMessage = messageSource.getMessage("upload.success", null, "Default Success Message", null);
 
-
-        return new ResponseEntity<>("Files uploaded successfully", HttpStatus.OK);
+        return new ResponseEntity<>(successMessage, HttpStatus.OK);
     }
 
     @RequestMapping(path = "/calculate", method = RequestMethod.GET)
@@ -61,7 +70,10 @@ public class MainController {
 
         System.out.println("Data is calculated");
 
-        return new ResponseEntity<>("Files calculated successfully", HttpStatus.OK);
+        String successMessage = messageSource.getMessage("calculate.success", null, "Default Success Message", null);
+
+
+        return new ResponseEntity<>(successMessage, HttpStatus.OK);
     }
 
 
@@ -71,7 +83,7 @@ public class MainController {
 
         InputStreamResource resource = new InputStreamResource(new FileInputStream(finalFile));
 
-        clearFolder(new File("src/main/resources/tmp"));
+        clearFolder(new File(downloadPath));
 
         return ResponseEntity.ok()
                 .contentLength(finalFile.length())

@@ -8,9 +8,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class MarketsCalculator {
+public class MarketsCalculator implements CalculatorInterface  {
 
-    public void calculateAndWriteData(ArrayList<File> files, File fileFinal) throws IOException {
+    public void calculateAndWrite(ArrayList<File> files, File fileFinal) throws IOException {
         ExcelModel excelModel = new ExcelModel(fileFinal);
 
 

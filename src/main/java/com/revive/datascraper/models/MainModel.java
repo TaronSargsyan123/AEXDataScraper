@@ -4,13 +4,9 @@ import com.revive.datascraper.calculators.InterstateDataCalculator;
 import com.revive.datascraper.calculators.MarketsCalculator;
 import com.revive.datascraper.calculators.PaymentCalculator;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -59,12 +55,12 @@ public class MainModel {
 
         try {
             PaymentCalculator paymentController = new PaymentCalculator();
-            paymentController.calculateAndWriteData(paymentFiles, finelFile);
+            paymentController.calculateAndWrite(paymentFiles, finelFile);
         }catch (Exception e){}
 
         try {
             MarketsCalculator marketsController = new MarketsCalculator();
-            marketsController.calculateAndWriteData(marketFiles, finelFile); // , "C:/Users/taron/Desktop/Template 23_01_2024 00_03_57.xlsx"
+            marketsController.calculateAndWrite(marketFiles, finelFile); // , "C:/Users/taron/Desktop/Template 23_01_2024 00_03_57.xlsx"
         }catch (Exception e){}
 
         try {
@@ -73,7 +69,10 @@ public class MainModel {
         }catch (Exception e){}
 
         try {
-            InterstateDataCalculator.calculateAndWriteData(interstateFile, finelFile);
+            InterstateDataCalculator interstateDataCalculator = new InterstateDataCalculator();
+            ArrayList<File> interstateFiles = new ArrayList<>();
+            interstateFiles.add(interstateFile);
+            interstateDataCalculator.calculateAndWrite(interstateFiles, finelFile);
         }catch (Exception e){}
 
 

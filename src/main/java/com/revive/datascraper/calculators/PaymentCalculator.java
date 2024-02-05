@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class PaymentCalculator {
+public class PaymentCalculator implements CalculatorInterface {
     private double surplusCount = 0;
     private double surplusPrice = 0;
 
@@ -20,7 +20,8 @@ public class PaymentCalculator {
 
     File finalFile = null;
 
-    public void calculateAndWriteData(ArrayList<File> files, File fileFinal) throws IOException {
+    @Override
+    public void calculateAndWrite(ArrayList<File> files, File fileFinal){
         int surplusCountColumn = 20;
         int surplusPriceColumn = 21;
         int shortageCountColumn = 22;
@@ -85,5 +86,6 @@ public class PaymentCalculator {
 
 
     }
+
 
 }

@@ -6,11 +6,15 @@ import com.revive.datascraper.ExcelModel;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
-public class InterstateDataCalculator {
-    public static String calculateAndWriteData(File file, File fileFinal) throws IOException {
+public class InterstateDataCalculator implements CalculatorInterface {
+
+    @Override
+    public void calculateAndWrite(ArrayList<File> fileArrayList, File fileFinal) throws IOException { //TODO add multiple files uploading functionality
 
         try {
+            File file = fileArrayList.get(0);
             ExcelModel excelModel = new ExcelModel(fileFinal);
             Double iranImportedSum = excelModel.getSumOfColumn(Constants.columnForIranImportedEnergyInInterstateDocument, Constants.rowForIranImportedEnergyInInterstateDocument, file);
             Double iranExportedSum = excelModel.getSumOfColumn(Constants.columnForIranExportedEnergyInInterstateDocument, Constants.rowForIranExportedEnergyInInterstateDocument, file);
@@ -30,9 +34,8 @@ public class InterstateDataCalculator {
             excelModel.writeCell(columnForGeorgiaImportedSum, rowForImport, georgiaImportedSum, fileFinal);
             excelModel.writeCell(columnForGeorgiaExportedSum, rowForImport, georgiaExportedSum, fileFinal);
 
-            return "Data successfully written";
         }catch (Exception e){
-            return e.getMessage();
+             e.printStackTrace();
         }
     }
 
