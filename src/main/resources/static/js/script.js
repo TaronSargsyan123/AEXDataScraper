@@ -73,6 +73,7 @@ function checkWindowWidth() {
         rightDiv.classList.add('custom-container');
         rightDiv.classList.remove('single-custom-container')
     } else {
+
         leftDiv.classList.add('hidden');
         rightDiv.classList.remove('custom-container');
         rightDiv.classList.add('single-custom-container')
