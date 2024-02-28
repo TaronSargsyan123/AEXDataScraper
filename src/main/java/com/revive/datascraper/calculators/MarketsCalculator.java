@@ -7,10 +7,11 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
-public class MarketsCalculator implements CalculatorInterface  {
+public class MarketsCalculator  {
 
-    public void calculateAndWrite(ArrayList<File> files, File fileFinal) throws IOException {
+    public void calculateAndWrite(ArrayList<File> files, File fileFinal, File DBMReportFile) throws IOException {
         ExcelModel excelModel = new ExcelModel(fileFinal);
 
 
@@ -34,6 +35,18 @@ public class MarketsCalculator implements CalculatorInterface  {
             double unregulatedMarketShortageSum = 0;
             double unregulatedInterstateMarketShortageSum = 0;
 
+            int DBMReportFileDateColumn = 1;
+            int DBMReportFileTimeColumn = 3;
+            int DBMReportFilePriceColumn = 7;
+
+            int marketsFileDateColumn = 1;
+            int marketsTimeColumn = 3;
+
+            double surplusPriceSum = 0;
+            double shortagePriceSum = 0;
+
+            boolean flagDBM = false;
+
 
 //            System.out.println(maxColumnForCheck);
 
@@ -55,6 +68,37 @@ public class MarketsCalculator implements CalculatorInterface  {
                     if (cell.length() == 3) { //ՕԱՇ
                         dayBeforeMarketSurplusSum = excelModel.getSumOfColumn(i, startCountingRow, file);
                         dayBeforeMarketShortageSum = excelModel.getSumOfColumn(i + 1, startCountingRow, file);
+
+                        if (flagDBM) {
+
+                            for (int j = startCountingRow; j < excelModel.getRowsCount(file); j++) {
+                                String date = (String) excelModel.readDataFromCell(marketsFileDateColumn, j, file);
+                                String time = (String) excelModel.readDataFromCell(marketsTimeColumn, j, file);
+
+                                String dateReport = (String) excelModel.readDataFromCell(DBMReportFileDateColumn, j - 4, DBMReportFile);
+                                String timeReport = (String) excelModel.readDataFromCell(DBMReportFileTimeColumn, j - 4, DBMReportFile);
+
+                                double price = 0;
+
+                                double DBMSurplus = (double) excelModel.readDataFromCell(i, j, file);
+                                double DBMShortage = (double) excelModel.readDataFromCell(i + 1, j, file);
+
+                                if (Objects.equals(timeReport, time) && Objects.equals(dateReport, date)) {
+                                    try {
+                                        price = (double) excelModel.readDataFromCell(DBMReportFilePriceColumn, j - 4, DBMReportFile);
+//                                        System.out.println("Price: " + price);
+//                                        surplusPriceSum += DBMSurplus * price;
+//                                        shortagePriceSum += DBMShortage * price;
+//                                        System.out.println("Surplus Price Sum: " + surplusPriceSum);
+//                                        System.out.println("Shortage Price Sum: " + shortagePriceSum);
+                                    } catch (Exception ignored) {
+                                    }
+
+                                }
+
+                            }
+
+                        }
 
                     }
 
@@ -100,15 +144,26 @@ public class MarketsCalculator implements CalculatorInterface  {
     }
 
     public void calculateAndWriteLongLastingShop(File fileForTariff, File initialFile, File fileFinal) throws IOException, InvalidFormatException {
-        ExcelModel excelModel = new ExcelModel(fileFinal);//210004
-        //String id = excelModel.readId(initialFile);
-        int row = excelModel.getRowFromReport(fileForTariff, "210004");//id
+//        ExcelModel excelModel = new ExcelModel(fileFinal);//210004
+//        //String id = excelModel.readId(initialFile);
+//        int row = excelModel.getRowFromReport(fileForTariff, "210004");//id
+//        double value = (double) excelModel.readDataFromCell(2, row, fileForTariff);
+//        double sum = excelModel.getSumOfColumn(4, 13, initialFile);
+//
+////        System.out.println(value);
+////        System.out.println(sum);
+//
+//
+//        int rowForImport = excelModel.getIdSequence("210004") + Constants.startCountingRow;
+//
+//        excelModel.writeCell(8, rowForImport, sum, fileFinal);
+//        excelModel.writeCell(9, rowForImport, sum * value, fileFinal);
+
+        ExcelModel excelModel = new ExcelModel(fileFinal);
+        String id = excelModel.readId(initialFile);
+        int row = excelModel.getRowFromReport(fileForTariff, "210004");
         double value = (double) excelModel.readDataFromCell(2, row, fileForTariff);
         double sum = excelModel.getSumOfColumn(4, 13, initialFile);
-
-//        System.out.println(value);
-//        System.out.println(sum);
-
 
         int rowForImport = excelModel.getIdSequence("210004") + Constants.startCountingRow;
 
@@ -116,8 +171,53 @@ public class MarketsCalculator implements CalculatorInterface  {
         excelModel.writeCell(9, rowForImport, sum * value, fileFinal);
 
 
+    }
+
+    public void calculateAndWriteRCMPurchasedPrice (ArrayList<File> files, File reportFile, File fileFinal) throws IOException, InvalidFormatException {
+        ExcelModel excelModel = new ExcelModel(fileFinal);
+
+        String nuclearPowerPlantID = "220237";
+        String hydroPowerStationID = "220235";
+
+        double nuclearPowerPlantTariff =  excelModel.getRowDataFromReport(reportFile, nuclearPowerPlantID);
+        double hydroPowerStationTariff =  excelModel.getRowDataFromReport(reportFile, hydroPowerStationID);
+
+        double nuclearPowerPlantSum = 0;
+        double hydroPowerStationSum = 0;
+
+        for (File file: files) {
+
+
+            String id = excelModel.getMarketPriceId(file);
+            int columnCount = excelModel.getColumnCount(file);
+
+            for (int i = 0; i < columnCount; i++) {
+
+                try {
+                    String cell = (String) excelModel.readDataFromCell(i, 15, file);
+
+
+                    if (cell.length() == 89){
+                        nuclearPowerPlantSum = excelModel.getSumOfColumn(i, 16, file);
+                    }else if (cell.length() == 69){
+                        hydroPowerStationSum = excelModel.getSumOfColumn(i, 16, file);
+                    }
+                }catch (Exception exception){}
+
+            }
+            int rowForImport = excelModel.getIdSequence(id) + Constants.startCountingRow;
+
+            double finalValue = nuclearPowerPlantSum * nuclearPowerPlantTariff + hydroPowerStationSum * hydroPowerStationTariff;
+
+            excelModel.writeCell(11, rowForImport, finalValue, fileFinal);
+
+
+
+        }
 
     }
+
+
 
 
 }

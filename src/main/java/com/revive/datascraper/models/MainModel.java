@@ -19,6 +19,7 @@ public class MainModel {
         File longTermMarketReportFile = null;
         ArrayList<File> marketFiles = new ArrayList<>();
         ArrayList<File> paymentFiles = new ArrayList<>();
+        ArrayList<File> rmcPurchasedFiles = new ArrayList<>();
 
 
 
@@ -48,6 +49,11 @@ public class MainModel {
                     paymentFiles.add(file);
                 }
 
+            }else if (Objects.equals(command, "rmcPurchasedMultiple")){
+                for (int i = 1; i < parts.length; i++) {
+                    File file  = getFileByName(parts[i], files);
+                    rmcPurchasedFiles.add(file);
+                }
             }
 
         }
@@ -60,7 +66,12 @@ public class MainModel {
 
         try {
             MarketsCalculator marketsController = new MarketsCalculator();
-            marketsController.calculateAndWrite(marketFiles, finelFile); // , "C:/Users/taron/Desktop/Template 23_01_2024 00_03_57.xlsx"
+            marketsController.calculateAndWrite(marketFiles, finelFile, longTermMarketReportFile);
+        }catch (Exception e){}
+
+        try {
+            MarketsCalculator marketsController = new MarketsCalculator();
+            marketsController.calculateAndWriteRCMPurchasedPrice(rmcPurchasedFiles, longTermMarketReportFile, finelFile);
         }catch (Exception e){}
 
         try {

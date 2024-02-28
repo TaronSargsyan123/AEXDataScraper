@@ -28,22 +28,16 @@ function uploadMultipleFiles(elementId, message) {
     xhr.send(formData);
 }
 
-
-
-
-
-
 function sendData(){
+    uploadMultipleFiles('marketsFormFileMultiple', 'marketsMultiple');
     uploadMultipleFiles('finalBlankFormFile', 'finalBlankFormFile');
     uploadMultipleFiles('interstateFormFile', 'interstate');
     uploadMultipleFiles('paymentFormFileMultiple', 'paymentMultiple');
     uploadMultipleFiles('longTermMarketFormFile', 'longTermMarket');
     uploadMultipleFiles('longTermMarketReportFormFile', 'longTermMarketReport');
-    uploadMultipleFiles('marketsFormFileMultiple', 'marketsMultiple');
+    uploadMultipleFiles('rmcPurchasedMultiple', 'rmcPurchasedMultiple');
 
 
-
-    const url = ''; // Update the URL accordingly
 
     fetch('/calculate')
         .then(response => {
@@ -59,7 +53,16 @@ function sendData(){
             console.error('Error:', error);
         });
 
-    document.getElementById("downloadBtn").disabled = false;
+    sleep(60000 ).then(() => {document.getElementById("downloadBtn").disabled = false; });
+
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function send(){
+    sendData();
 }
 
 function checkWindowWidth() {
@@ -94,6 +97,7 @@ document.getElementById('downloadBtn').addEventListener('click', function() {
             const url = window.URL.createObjectURL(new Blob([blob]));
             const a = document.createElement('a');
             a.href = url;
+            a.download = 'final.xlsx';
             document.body.appendChild(a);
             a.click();
             window.URL.revokeObjectURL(url);

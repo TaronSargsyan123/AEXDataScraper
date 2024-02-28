@@ -24,7 +24,7 @@ public class ExcelModel {
         ArrayList<Double> doubleList = this.readNumericalColumn(columnIndex, startRowIndex, file);
         double sum = 0.0;
         for (Object number : doubleList) {
-            System.out.println(number);
+//            System.out.println(number);
             try {
                 sum = sum + (double)number;
             }catch (Exception ignored){}
@@ -34,6 +34,7 @@ public class ExcelModel {
 
     public void readFinalIDs(File finalFile){ //TODO null point exception
         try {
+//            Thread.sleep(1000);
             //open file
             FileInputStream fileInputStream = new FileInputStream(finalFile);
             Workbook workbook = new XSSFWorkbook(fileInputStream);
@@ -70,7 +71,7 @@ public class ExcelModel {
             //e.printStackTrace();
         }
 
-        System.out.println(getIdCount());
+//        System.out.println(getIdCount());
     }
 
     public String readId(File file){
@@ -117,6 +118,15 @@ public class ExcelModel {
         return id;
     }
 
+    public String getMarketPriceId(File file){
+        String id;
+        id = (String) readDataFromCell(7, 8, file);
+        int length = id.length();
+        id = id.substring(length - 6);
+
+        return id;
+    }
+
     public int getIdSequence(String id){
         int sequence = 0;
         for (String i: idArrayList){
@@ -152,7 +162,7 @@ public class ExcelModel {
                     //get value
                     try {
                         Double cellValue = cell.getNumericCellValue();
-                        System.out.println(cellValue);
+                        if (cellValue != 0 ) System.out.println(cellValue);
                         //add to ArrayList
                         tempList.add(cellValue);
                     }catch (Exception ignored){}
@@ -187,12 +197,12 @@ public class ExcelModel {
                         cellValue = cell.getStringCellValue();
                     }
 
-                    System.out.println(cellValue);
+//                    System.out.println(cellValue);
                 } else {
-                    System.out.println("Cell not exist");
+//                    System.out.println("Cell not exist");
                 }
             } else {
-                System.out.println("Row not exist");
+//                System.out.println("Row not exist");
             }
             fileInputStream.close();
 
@@ -217,7 +227,7 @@ public class ExcelModel {
             if(index > 0) {
                 String extension = fileName.substring(index + 1);
                 if (extension.equals("xls") || extension.equals("xlsx")){
-                    System.out.println(fileEntry.getName());
+//                    System.out.println(fileEntry.getName());
                     files.add(fileEntry);
                 }
 
@@ -281,6 +291,27 @@ public class ExcelModel {
         fileOutputStream.close();
 
     }
+
+    public double getRowDataFromReport(File file, String id) throws IOException, InvalidFormatException {
+        FileInputStream fileInputStream = new FileInputStream(file);
+        Workbook workbook;
+        workbook = WorkbookFactory.create(fileInputStream);
+
+        Sheet sheet = workbook.getSheetAt(0);
+        double value = 0;
+
+        for (int i = 5; i < sheet.getPhysicalNumberOfRows(); i++) {
+
+            String rowValue = (String) readDataFromCell(0, i, file);
+            String firstSixChars = rowValue.substring(0, Math.min(rowValue.length(), 6));
+            if (Objects.equals(id, firstSixChars)){
+                value = (double) readDataFromCell(2, i, file);
+            }
+        }
+
+        return value;
+    }
+
 
     public int getIdCount() {
         return idCount;

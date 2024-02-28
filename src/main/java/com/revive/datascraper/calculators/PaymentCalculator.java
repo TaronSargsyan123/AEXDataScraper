@@ -16,6 +16,8 @@ public class PaymentCalculator implements CalculatorInterface {
     private double shortageCount = 0;
     private double shortagePrice = 0;
 
+    private double powerPrice = 0;
+    private double powerCount = 0;
     String id = null;
 
     File finalFile = null;
@@ -26,12 +28,17 @@ public class PaymentCalculator implements CalculatorInterface {
         int surplusPriceColumn = 21;
         int shortageCountColumn = 22;
         int shortagePriceColumn = 23;
+
+        int powerPriceColumn = 5;
+        int powerCountColumn = 4;
+
         this.finalFile = fileFinal;
 
         ExcelModel excelModel = new ExcelModel(fileFinal);
 
 
         for (File file: files) {
+
             try {
                 getData(file);
                 int rowForImport = excelModel.getIdSequence(id) + Constants.startCountingRow;
@@ -40,6 +47,10 @@ public class PaymentCalculator implements CalculatorInterface {
                 excelModel.writeCell(surplusPriceColumn, rowForImport, surplusPrice, fileFinal);
                 excelModel.writeCell(shortageCountColumn, rowForImport, shortageCount, fileFinal);
                 excelModel.writeCell(shortagePriceColumn, rowForImport, shortagePrice, fileFinal);
+
+                excelModel.writeCell(powerCountColumn, rowForImport, powerCount, fileFinal);
+                excelModel.writeCell(powerPriceColumn, rowForImport, powerPrice, fileFinal);
+
             }catch (Exception e){
                 //e.printStackTrace();
             }
@@ -62,6 +73,10 @@ public class PaymentCalculator implements CalculatorInterface {
                         if (parts[0].length() == 9){ // remove Շուկայի oպերատոր
                             surplusCount = (double) excelModel.readDataFromCell(5, i, file);
                             surplusPrice = (double) excelModel.readDataFromCell(6, i, file);
+                            System.out.println("LOG FILE NAME: " + file.getName());
+                            System.out.println("LOG COUNT: " + surplusCount);
+                            System.out.println("LOG ID: " + id);
+
                         }
                     }
 
@@ -69,20 +84,30 @@ public class PaymentCalculator implements CalculatorInterface {
                         shortageCount = (double) excelModel.readDataFromCell(5, i, file);
                         shortagePrice = (double) excelModel.readDataFromCell(6, i, file);
                     }
-                }else {}
+
+                    if (serviceName.length() == 27){
+                        String[] parts = serviceName.split(" ");
+                        if (parts[0].length() == 11){
+                            powerCount = (double) excelModel.readDataFromCell(5, i, file);
+                            powerPrice = (double) excelModel.readDataFromCell(6, i, file);
+                        }
+
+                    }
+
+                }
             }catch (Exception e){
 //                e.printStackTrace();
             }
         }
 
-        System.out.println();
-        System.out.println("ID - " + id);
-        System.out.println();
-        System.out.println("Ավելցուկի վաճառք - " + surplusCount);
-        System.out.println("Ավելցուկի վաճառք gin - " + surplusPrice);
-        System.out.println();
-        System.out.println("Պակասորդի գնում - " + shortageCount);
-        System.out.println("Պակասորդի գնում price - " + shortagePrice);
+//        System.out.println();
+//        System.out.println("ID - " + id);
+//        System.out.println();
+//        System.out.println("Ավելցուկի վաճառք - " + surplusCount);
+//        System.out.println("Ավելցուկի վաճառք gin - " + surplusPrice);
+//        System.out.println();
+//        System.out.println("Պակասորդի գնում - " + shortageCount);
+//        System.out.println("Պակասորդի գնում price - " + shortagePrice);
 
 
     }
